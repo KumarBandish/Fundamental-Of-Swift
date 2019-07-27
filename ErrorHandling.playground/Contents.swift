@@ -1,5 +1,4 @@
 import UIKit
-//https://www.bobthedeveloper.io/blog/intro-to-error-handling-in-swift
 var str = "Hello, playground"
 
 //1. Enum cases - use for try, catch, throw
@@ -136,5 +135,5 @@ if let _ = newCourse1 {
 
 //It’s going to crash. Just like force unwrapping with !, never use it unless you have to by default or you are 101% sure what’s going on.
 
-let newCourse2 = try! College(name: "")
-
+//let newCourse2 = try! College(name: "")
+// last line of code will crash, So I commented it.
