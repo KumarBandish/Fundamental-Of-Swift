@@ -1,0 +1,99 @@
+import UIKit
+
+/*
+ Enum
+ 
+ - Basic Enumarations
+ - Enumarations that have raw value
+ - Enumarations that have associate value
+ 
+ */
+
+//Basic Enumarations
+
+enum India {
+
+    case north
+    case south
+    case east
+    case west
+}
+
+//initialze enum
+
+let india = India.north
+
+switch india {
+case .north: print("Himalaya")
+case .south: print("Indian Ocean")
+case .east : print("Bay of Bengal")
+case .west: print("Arbian Ocean")
+}
+
+/*
+ Raw value : String, Bool, Float, Integer
+*/
+enum Days: Int {
+    case mon, tue, wed, thu, fri, sat, sun
+}
+Days.mon.rawValue //0
+Days.sun.rawValue //6
+
+//enum: Always return option value
+//Initalization from Raw value
+if let day  = Days(rawValue: 5)  {
+    switch day {
+    case .sat, .sun: print("Weekends!")
+    default:  print("Weekdays")
+    }
+} else {
+    print("no such day exist")
+}
+
+/*
+ Associate Value
+ Swift Doc
+ */
+
+enum BarCode {
+    case upc(Int, Int, Int, Int) //Universal Product Code - 1D Barcodes
+    case qrCode(String) //2D Barcodes
+}
+
+var myQrCode = BarCode.qrCode("pqr")
+var myUPCCode = BarCode.upc(23441, 1111, 1211, 081)
+
+//here We have value associated from each case
+//Where is it useful?: -- Validation
+
+if case let BarCode.qrCode(value) = myQrCode {
+    print("This is QRCode value--\(value)")
+}
+
+if case let BarCode.upc(numberSystemId, manufactureId, productId, checkId) = myUPCCode {
+    print("numberSystemId - \(numberSystemId)")
+    print("manufactureId - \(manufactureId)")
+    print("productId - \(productId)")
+    print("checkId - \(checkId)")
+}
+
+
+//If We are using enum, best way to use switch to check condition
+
+let code = myUPCCode
+switch code {
+case .upc(let numberSystemId, let manufactureId, let productId, let checkId):
+    print("UPC: \(numberSystemId), \(manufactureId), \(productId), \(checkId)")
+case .qrCode(let value):
+     print("This is QRCode value--\(value)")
+}
+
+//While working with Associate enum type, We use let sothat we can take constant  from associate value
+
+//We can also write let infront of  case, that indicates all params is let type
+switch code {
+case let .upc(numberSystemId, manufactureId, productId, checkId):
+    print("UPC: \(numberSystemId), \(manufactureId), \(productId), \(checkId)")
+case let .qrCode(value):
+     print("This is QRCode value--\(value)")
+}
