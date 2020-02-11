@@ -9,5 +9,7 @@ Swift basic course
 3. OOPS Concept in swift
 
 4. Struct vs Class, Type Casting: Checking type & Downcasting
+
+5. keyPath: Using keyPath, We can access value from class,struct,enum.
  
   
