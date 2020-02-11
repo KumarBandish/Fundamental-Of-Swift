@@ -1,0 +1,241 @@
+import UIKit
+//Advance uses of Enum
+//suppose we are using multiple Storyboards
+
+enum Storyboard: String {
+    case profile
+    case setting
+    case myRide
+    
+    var identifier: String {
+        return self.rawValue
+    }
+}
+//Here, we can directly access the name, so no need to type every place storyboard name
+let myRide = Storyboard.myRide
+myRide.identifier
+
+//API guidlines goal
+func describeStoryborad(storyboard: Storyboard) {
+    switch storyboard {
+    case .profile: print("profile storyboard")
+    case .setting: print("setting storyboard")
+    case .myRide: print("myRide storyboard")
+    }
+}
+describeStoryborad(storyboard: .profile)
+
+enum NumberCategory {
+    case small
+    case medium
+    case big
+    
+    init(number: Int) {
+        switch number {
+        case 0..<1000:
+            self = .small
+        case 1000..<100000:
+            self = .medium
+        default:
+            self = .big
+        }
+    }
+}
+
+NumberCategory(number: 10)
+//practical case
+
+enum HTTPError: String {
+    case Code400 = "Bad Request"
+    case Code401 = "UnAuthorized"
+    case Code403 = "Forbidden"
+    case Code404 = "Page not found"
+    
+    var description: String {
+        return self.rawValue
+    }
+}
+HTTPError.Code404.description
+
+//Nested Enum
+enum CollegeCourse {
+    enum PUCCourse: String {
+        case math
+        case bio
+        case arts
+        
+        var description: String {
+            return self.rawValue
+        }
+    }
+    
+    enum DegreeCourse: String {
+        case cse
+        case mech
+        case civil
+        case ece
+        
+        var description: String {
+            return self.rawValue
+        }
+    }
+}
+
+CollegeCourse.PUCCourse.math //math
+CollegeCourse.DegreeCourse.cse //cse
+
+//eg: Game design
+struct Character {
+    enum CharacterType {
+        case prince
+        case warrior
+        case priest
+    }
+    
+    enum Skill {
+        case airwalk
+        case tranparency
+        case prediction
+    }
+    
+    let type: CharacterType
+    let skill: Skill
+}
+
+let bob = Character(type: .warrior, skill: .airwalk)
+
+
+/*Protocol Oriented Enum */
+
+//Game design
+
+protocol LifeSpan {
+    var numberOfHearts: Int { get }
+   mutating func increaseHeart() //heart + 1
+   mutating func getAttacked() //heart - 1
+}
+
+enum Player: LifeSpan {
+    case dead
+    case alive(currentHeart: Int)
+    
+    var numberOfHearts: Int {
+        switch self {
+        case .dead: return 0
+        case let .alive(numberOfHearts):
+            return numberOfHearts
+        }
+    }
+    
+    mutating func increaseHeart() {
+        switch self {
+        case .dead:
+            self = .alive(currentHeart: 1)
+        case let .alive(numberOfheart):
+            self = .alive(currentHeart: numberOfheart + 1)
+        }
+    }
+    
+    mutating func getAttacked() {
+        switch self {
+        case let .alive(numberOfheart):
+            if numberOfheart <= 1 {
+                self = .dead
+            }
+            self = .alive(currentHeart: numberOfheart - 1)
+            
+        case .dead: break
+        }
+    }
+}
+
+var state = Player.dead
+state.increaseHeart()
+state.numberOfHearts
+state.increaseHeart()
+state.getAttacked()
+state.getAttacked()
+
+// Recursive Enum -- Problem: Enum contains its own enum type
+
+//Recursive enum 'Arithmetic' is not marked 'indirect'
+
+indirect enum Arithmetic {
+    case number(Int)
+    case addition(Arithmetic, Arithmetic)
+    case multiplication(Arithmetic, Arithmetic)
+}
+
+func calculate(_ expression: Arithmetic) -> Int {
+    switch expression {
+    case let .number(value):
+        return value
+    case let .addition(first, second):
+        return calculate(first) + calculate(second)
+    case let .multiplication(first, second):
+        return calculate(first) * calculate(second)
+    }
+}
+//Enum is value type: But inside enum , enum contains refernce type for another enum and modifying their value
+
+calculate(.number(5))
+calculate(.addition(.number(10), .number(12)))
+//simple way
+let ten = Arithmetic.number(10)
+let tweleve = Arithmetic.number(12)
+calculate(.addition(ten, tweleve))
+
+calculate(.multiplication(ten, tweleve))
+
+//eg: linked list, tree
+
+
+
+//Generic Enum
+
+//A little more complex assocoated value:
+
+enum Information<B, K> {
+    case name(B)
+    case company(B)
+    case age(K)
+}
+/*
+ Generic parameter 'K' could not be inferred: name(B): inferred type string based on pass value,
+ */
+//Information.name("bandish")
+//here We have defined each associate value explicitly
+Information<String, Any>.name("bandish")
+
+let quickOptional: String? = "aa"
+let explicitOptional = Optional("bandish")
+
+enum MyOptional<T> {
+    case none //nil
+    case some(T)
+    init(_ anyValue: T) {
+        self = .some(anyValue)
+    }
+}
+
+MyOptional("Bandish Kumar")
+
+//Error Handling with enum
+
+
+//Design Error
+
+enum HTTPErrors {
+    case notFound404
+    case forbidden403
+}
+
+//Design Result
+enum ResultType<T> {
+    case success(T)
+    case failure(HTTPErrors)
+}
+//Handle maintainable & scalable code
+
+let success = ResultType.success("json data")
+let failure = ResultType<Any>.failure(.forbidden403)
