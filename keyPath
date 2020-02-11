@@ -1,0 +1,34 @@
+import UIKit
+
+struct Creature {
+    var person: Person
+    var information: Information
+}
+enum Person {
+    case male, female
+}
+struct Information {
+    var name, age, address: String
+}
+
+//create objects
+let maleInformation = Information(name: "Ansh", age: "7", address: "Sasaram")
+let femaleInformation = Information(name: "Harshita", age: "10", address: "Buxar")
+
+let creature1 = Creature(person: .male, information: maleInformation)
+let creature2 = Creature(person: .female, information: femaleInformation)
+//earlier
+creature1.information.name //Ansh
+creature2.information.name //Harshita
+
+//now using keypath
+let creature1Name = creature1[keyPath: \Creature.information.name] //Ansh
+let creature2Name = creature2[keyPath: \Creature.person] //Harshita
+//strore keypath
+let informationKeyPath = \Creature.information
+let anshInfo = creature1[keyPath: informationKeyPath]
+let harshitaInfo = creature2[keyPath: informationKeyPath]
+//Append Key path
+let nameKeyPath = informationKeyPath.appending(path: \.name)
+creature1[keyPath: nameKeyPath]
+creature2[keyPath: nameKeyPath]
