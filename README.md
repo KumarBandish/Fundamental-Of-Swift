@@ -10,6 +10,6 @@ Swift basic course
 
 4. Struct vs Class, Type Casting: Checking type & Downcasting
 
-5. keyPath: Using keyPath, We can access value from class,struct,enum.
+5. keyPath: Using keyPath, We can access the value from class,struct,enum.
  
   
