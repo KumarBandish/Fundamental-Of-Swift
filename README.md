@@ -15,4 +15,6 @@ Swift basic course
 6. Enum- basic.
 
 7. Enum- advance usage of enum: generic, protocol
+
+8. rethrows: When methods return rethrows
   
