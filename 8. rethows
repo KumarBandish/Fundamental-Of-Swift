@@ -1,0 +1,43 @@
+import UIKit
+
+// What is rethrows?
+
+//Design error case
+enum ErrorType: Error {
+    case randomEror
+}
+
+//Design two function: 1. nonthowable 2. thowable
+func nonThrowableFunc() {
+    print("from nonthowable function")
+}
+
+func throwableFunc() throws {
+    print("from thowable function")
+    throw ErrorType.randomEror
+}
+
+//Write one mothods which return type is rethrows:
+func rethrowableFuncWithErrorHandling(closure: () throws -> ()) rethrows {
+    do {
+        try closure()
+    } catch ErrorType.randomEror {
+        print("Random error thrown by the closure")
+    } catch {
+        fatalError("Fatal error") //shut down the app
+    }
+}
+
+//Pass  closure block that can throws a error
+try? rethrowableFuncWithErrorHandling(closure: throwableFunc) //output: Random error thrown by the closure
+
+
+//Pass closure block that can't throws a error
+rethrowableFuncWithErrorHandling(closure: nonThrowableFunc) //not throwing error , so need to use try
+
+/*
+what rethrows does here: --> if method return type is rethrows means, We can enter closure block of nonthrowable as well as thowable(that can throw error or may be not throw any error).
+ */
+ 
+//For eg: map , filter reutrn type
+
