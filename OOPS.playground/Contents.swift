@@ -26,15 +26,15 @@ class Person {
 //2.Objects
 //An object is anything that you see which comes from a particular class
 
-let man = Person()
+let person = Person()
 
 //3.Properties
 //properties of a class are common attributes of that class that can be shared across each object which is derived from it
-man.age = 25 //here, age is property
+person.age = 25 //here, age is property
 
 //4.Methods
 //Methods or Functions are the behavior of the objects of a class
-man.displayAge()
+person.displayAge()
 
 //5.Access Control: public, private, internal, fileprivate, open
 
